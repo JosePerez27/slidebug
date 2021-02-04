@@ -11,13 +11,13 @@
             <div class="services">
                 <ion-label>Services</ion-label>
                 <ion-slides pager="true" :options="slideOpts">
-                    <!-- Here the app breaks -->
+                    <!-- Here the app crahses -->
                     <ion-slide v-for="(service, index) in services" :key="index">
                         <ion-card>
                            {{ service.name }}
                         </ion-card>
                     </ion-slide>
-                    <!-- Here the app breaks -->
+                    <!-- Here the app crahses -->
                 </ion-slides>
             </div>
         </ion-content>
