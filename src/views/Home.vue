@@ -1,68 +1,95 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Blank</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
-    </ion-content>
-  </ion-page>
+    <ion-page>
+        <ion-content>
+            <!-- Content -->
+            <div class="content">
+                <ion-label>Content</ion-label>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi labore quis, illo, possimus dolorem et doloremque nostrum quae repellat minus tempora ea dolores? Eveniet nostrum provident, numquam quia molestiae sequi.</p>
+            </div>
+
+            <!-- Services slider cards -->
+            <div class="services">
+                <ion-label>Services</ion-label>
+                <ion-slides pager="true" :options="slideOpts">
+                    <!-- Here the app breaks -->
+                    <ion-slide v-for="(service, index) in services" :key="index">
+                        <ion-card>
+                           {{ service.name }}
+                        </ion-card>
+                    </ion-slide>
+                    <!-- Here the app breaks -->
+                </ion-slides>
+            </div>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { IonContent, IonPage, IonSlides, IonSlide, IonLabel, IonCard } from '@ionic/vue';
+import { defineComponent, onMounted, ref } from 'vue';
+
+// Service interface
+interface Service {
+    name: string;
+}
 
 export default defineComponent({
-  name: 'Home',
-  components: {
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar
-  }
+    name: 'Home',
+    components: {
+        IonContent,
+        IonPage,
+        IonSlides,
+        IonSlide,
+        IonCard,
+        IonLabel
+    },
+    setup() {
+        // Declare services data array
+        const services = ref<Service[]>([]);
+
+        // Slider Options
+        const slideOpts = {
+            speed: 400,
+            initialSlide: 0,
+            slidesPerView: 2,
+            spaceBetween: 190,
+            centeredSlides: true,
+        };
+
+        onMounted(() => {
+            // Simulate HTTP Request to fill the array
+            setTimeout(() => {
+                const data = [
+                    {
+                        name: 'Slide 1'
+                    },
+                    {
+                        name: 'Slide 2'
+                    },
+                    {
+                        name: 'Slide 3'
+                    },
+                ];
+
+                services.value.push(...data)
+            }, 2000);
+        })
+
+        return {
+            slideOpts,
+            services
+        }
+    }
 });
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.content, .services {
+    text-align: center;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+ion-card {
+    min-width: 280px;
+    min-height: 350px;
 }
 </style>
